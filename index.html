@@ -50,6 +50,7 @@
             --chapter-header-bg: #f3f9ff;
             --chapter-card-text: #4c4c4c;
             --chapter-card-border: #e0e0e0;
+            --chapter-card-muted: #909090;
             --idea-expanded-bg: rgba(0, 93, 173, 0.04);
             --toggle-track-bg: #ededed;
         }
@@ -74,6 +75,7 @@
             --chapter-header-bg: #dbeafe;
             --chapter-card-text: #0f172a;
             --chapter-card-border: #cbd5e1;
+            --chapter-card-muted: #64748b;
             --idea-expanded-bg: rgba(0, 0, 0, 0.04);
             --toggle-track-bg: #282e3d;
             --body-text: #475569;
@@ -328,7 +330,7 @@
         .custom-dropdown-item:hover { background: rgba(0,0,0,0.05); color: var(--accent); }
         .dropdown-divider { height: 1px; background-color: var(--border); margin: 0.25rem 0; opacity: 0.6; }
 
-        .layout-70-30 { display: flex; gap: 1.25rem; align-items: flex-start; height: 100%; max-width: 1000px; margin: 0 auto; }
+        .layout-70-30 { display: flex; gap: 1.25rem; align-items: flex-start; height: 100%; max-width: 760px; margin: 0 auto; }
         
         /* CONTENEDOR SOLO CON BORDE SIN FONDO (TRANSPARENTE) Y BARRAS SUPERIORES COMPACTAS */
         .ideas-editor-col { 
@@ -375,7 +377,7 @@
         body.focus-mode-active header { display: none; }
         body.focus-mode-active main { height: 100vh; padding: 1.25rem 0; }
         body.focus-mode-active .ideas-sidebar-col { display: none; }
-        body.focus-mode-active .layout-70-30 { max-width: 800px; }
+        body.focus-mode-active .layout-70-30 { max-width: 620px; }
         body.focus-mode-active .ideas-editor-col { flex: 0 0 100%; height: calc(100vh - 2.5rem); }
 
         .tag-filters-container { display: flex; gap: 0.25rem; margin-bottom: 0.35rem; flex-wrap: wrap; }
@@ -474,7 +476,7 @@
         
         .chapter-collapse-icon {
             font-size: var(--fs-3xs);
-            color: var(--text-muted);
+            color: var(--chapter-card-muted);
             opacity: 0.7;
             transition: transform 0.18s ease;
             margin-right: 0.18rem;
@@ -540,7 +542,7 @@
         .idea-chapter-title { 
             font-size: var(--fs-base); 
             font-weight: 600; 
-            color: var(--text-main) !important; 
+            color: var(--chapter-card-text) !important; 
             white-space: nowrap; 
             overflow: hidden; 
             text-overflow: ellipsis; 
@@ -549,7 +551,7 @@
         
         .chapter-card-clean .btn-icon { opacity: 0.75; }
         .chapter-card-clean .btn-icon:hover { opacity: 1; }
-        .chapter-card-clean .btn-icon svg { stroke: var(--text-muted) !important; }
+        .chapter-card-clean .btn-icon svg { stroke: var(--chapter-card-muted) !important; }
         .chapter-card-clean .btn-icon[title="Eliminar Capítulo"] { opacity: 0; }
         .chapter-card-clean:hover .btn-icon[title="Eliminar Capítulo"] { opacity: 0.75; }
         .idea-in-chapter .btn-icon[title="Quitar de capítulo"] { opacity: 0; }
@@ -870,7 +872,7 @@
             height: 100vh;
             background: rgba(0, 0, 0, 0.3);
             backdrop-filter: blur(3px);
-            z-index: 300;
+            z-index: 600;
             align-items: center;
             justify-content: center;
         }
@@ -904,6 +906,46 @@
             gap: 0.35rem;
             margin-top: 0.15rem;
         }
+
+        .welcome-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease;
+        }
+        .welcome-screen.open { opacity: 1; visibility: visible; }
+        .welcome-content { text-align: center; max-width: 520px; padding: 2rem; }
+        .welcome-logo { font-size: 2.6rem; margin-bottom: 0.7rem; }
+        .welcome-title { font-family: var(--font-narrative); font-size: 1.3rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.35rem; }
+        .welcome-subtitle { font-size: var(--fs-md); color: var(--text-muted); margin-bottom: 2rem; }
+        .welcome-actions { display: flex; gap: 1rem; justify-content: center; }
+        .welcome-action-card {
+            flex: 1;
+            max-width: 210px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.4rem 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: var(--font-ui);
+            box-shadow: var(--shadow-main);
+        }
+        .welcome-action-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .welcome-action-card.primary { border-color: var(--accent); background: var(--tag-bg); }
+        .welcome-action-icon { font-size: 1.7rem; }
+        .welcome-action-title { font-weight: 700; font-size: var(--fs-md); color: var(--text-main); }
+        .welcome-action-desc { font-size: var(--fs-sm); color: var(--text-muted); line-height: 1.4; }
 
         .trash-container { max-width: 560px; margin: 0 auto; height: calc(100vh - 100px); overflow-y: auto; padding-right: 0.4rem; }
 
@@ -1082,11 +1124,11 @@
                 </div>
 
                 <div class="ideas-sidebar-col">
-                    <div style="font-size: var(--fs-sm); font-weight: 600; color: var(--text-muted); letter-spacing: 0.04em;">MIS IDEAS</div>
                     <input type="text" id="searchIdea" placeholder="Buscar idea..." oninput="renderIdeas()" style="font-size: var(--fs-sm); padding:0.3rem 0.5rem; margin-bottom:0.15rem;">
-                    
+
                     <div class="tag-filters-container" id="tagFiltersContainer"></div>
 
+                    <div style="font-size: var(--fs-sm); font-weight: 600; color: var(--text-muted); letter-spacing: 0.04em;">MIS IDEAS</div>
                     <div id="ideasGrid" style="display: flex; flex-direction: column; gap: 0.35rem;"></div>
                 </div>
             </div>
@@ -1135,7 +1177,7 @@
                         <div style="display:flex; gap:0.35rem; align-items:center;">
                             <button class="btn" onclick="toggleTOC()">Índice</button>
                             <input type="text" id="metaTitle" class="meta-input-subtle" placeholder="Título..." style="width:140px; margin:0; padding:0.2rem 0.4rem; font-size: var(--fs-sm);" oninput="saveMeta()">
-                            <input type="text" id="metaSubtitle" class="meta-input-subtle" placeholder="Subtítulo / Autor..." style="width:140px; margin:0; padding:0.2rem 0.4rem; font-size: var(--fs-sm);" oninput="saveMeta()">
+                            <input type="text" id="metaSubtitle" class="meta-input-subtle" placeholder="Subtítulo..." style="width:140px; margin:0; padding:0.2rem 0.4rem; font-size: var(--fs-sm);" oninput="saveMeta()">
                         </div>
                         <div style="display:flex; gap:0.35rem; align-items:center;">
                             <button class="btn" onclick="prevSpread()">← Anterior</button>
@@ -1176,6 +1218,27 @@
         </div>
     </div>
 
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="welcome-content">
+            <div class="welcome-logo">✒️</div>
+            <h1 class="welcome-title">Estudio de Escritura Profesional</h1>
+            <p class="welcome-subtitle">¿Qué querés hacer en esta sesión?</p>
+            <div class="welcome-actions">
+                <button class="welcome-action-card" onclick="closeWelcomeModal(); document.getElementById('fileInput').click();">
+                    <span class="welcome-action-icon">📂</span>
+                    <span class="welcome-action-title">Abrir documento</span>
+                    <span class="welcome-action-desc">Cargar un archivo .json guardado antes</span>
+                </button>
+                <button class="welcome-action-card primary" onclick="startNewDocument()">
+                    <span class="welcome-action-icon">✨</span>
+                    <span class="welcome-action-title">Crear nuevo</span>
+                    <span class="welcome-action-desc">Empezar un manuscrito en blanco</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
     <div class="word-counter-bar" id="globalWordCounter">0 palabras</div>
 
     <!-- Contenedor invisible en pantalla, solo se muestra durante la impresión (@media print) -->
@@ -1183,7 +1246,7 @@
 
     <script>
         let rawData = localStorage.getItem('myBookData');
-        let data = { title: 'TÍTULO DEL LIBRO', subtitle: 'Subtítulo o Nombre del Autor', ideas: [], chapters: [], trash: { ideas: [], chapters: [] } };
+        let data = { title: 'TÍTULO', subtitle: 'SUBTÍTULO', ideas: [], chapters: [], trash: { ideas: [], chapters: [] } };
 
         try {
             if (rawData) {
@@ -1303,6 +1366,46 @@
         function closeCustomDialog() {
             const backdrop = document.getElementById('customDialogBackdrop');
             if (backdrop) backdrop.classList.remove('open');
+        }
+
+        function hasAnyProjectData() {
+            return data.ideas.length > 0 || data.chapters.length > 0 ||
+                   data.worldBible.lineamientos.length > 0 || data.worldBible.personajes.length > 0;
+        }
+
+        function showWelcomeModal() {
+            const backdrop = document.getElementById('welcomeScreen');
+            if (!backdrop) return;
+            backdrop.classList.add('open');
+        }
+
+        function closeWelcomeModal() {
+            const backdrop = document.getElementById('welcomeScreen');
+            if (backdrop) backdrop.classList.remove('open');
+        }
+
+        function startNewDocument() {
+            const doReset = () => {
+                data = {
+                    title: 'TÍTULO', subtitle: 'SUBTÍTULO',
+                    ideas: [], chapters: [], trash: { ideas: [], chapters: [] },
+                    tags: ['idea', 'personaje', 'lugar', 'subtrama'],
+                    worldBible: { lineamientos: [], personajes: [] }
+                };
+                saveData();
+                renderBookView();
+                closeWelcomeModal();
+            };
+            if (hasAnyProjectData()) {
+                showCustomConfirm({
+                    title: 'Crear nuevo documento',
+                    message: 'Esto borra el manuscrito actual (ideas, capítulos, mundo). ¿Querés continuar?',
+                    isDanger: true,
+                    onConfirm: doReset
+                });
+            } else {
+                doReset();
+            }
         }
 
         function toggleTheme() {
@@ -1498,6 +1601,7 @@
             if (ideaContentInput) ideaContentInput.addEventListener('keydown', (e) => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); saveIdea(); } });
             
             updateWordCount();
+            showWelcomeModal();
         });
 
         function updateWordCount() {
@@ -2403,8 +2507,8 @@
             pages.push(`
                 <div class="book-page">
                     <div class="page-inner-content">
-                        <div class="cover-title">${escapeHtml(data.title || 'TÍTULO DEL LIBRO')}</div>
-                        <div class="cover-subtitle">${escapeHtml(data.subtitle || 'Subtítulo / Autor')}</div>
+                        <div class="cover-title">${escapeHtml(data.title || 'TÍTULO')}</div>
+                        <div class="cover-subtitle">${escapeHtml(data.subtitle || 'SUBTÍTULO')}</div>
                     </div>
                     <div class="page-footer-num">- ${pageNum++} -</div>
                 </div>
