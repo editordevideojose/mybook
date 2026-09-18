@@ -755,10 +755,32 @@
         }
 
         .page-footer-num { text-align: center; font-family: var(--font-ui); font-size: var(--fs-xs); color: var(--text-muted); margin-top: 0.45rem; border-top: 1px solid var(--border); padding-top: 0.35rem; }
-        .cover-title { text-align: center; font-size: var(--fs-cover); font-weight: 700; margin-top: 4.5rem; color: var(--text-main); text-transform: uppercase; overflow-wrap: break-word; }
+        .cover-title { text-align: center; font-size: var(--fs-cover); font-weight: 700; margin-top: 4.5rem; color: var(--text-main); overflow-wrap: break-word; }
         .cover-subtitle { text-align: center; font-size: var(--fs-lg); font-style: italic; color: var(--text-muted); margin-top: 0.5rem; overflow-wrap: break-word; }
+
+        /* Placeholders unificados en toda la app: siempre más claros, sin heredar peso/mayúsculas del campo */
+        ::placeholder {
+            color: var(--text-muted) !important;
+            opacity: 0.7 !important;
+            font-weight: 400 !important;
+            text-transform: none !important;
+        }
+
+        /* Campos de título/subtítulo del libro: apagados como una opción de toggle inactiva, ya que se tocan poco */
+        .meta-input-subtle {
+            color: var(--text-muted) !important;
+            font-weight: 400 !important;
+            background: transparent !important;
+            border-color: var(--border) !important;
+            box-shadow: none !important;
+        }
+        .meta-input-subtle:hover, .meta-input-subtle:focus {
+            color: var(--text-main) !important;
+            border-color: var(--border) !important;
+        }
         .chapter-header-page { min-height: 85px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; margin-bottom: 0.9rem; position: relative; }
-        .chapter-title-page { text-align: center; font-family: var(--font-ui); font-size: var(--fs-2xl); font-weight: 600; color: var(--text-main); margin-bottom: 0.5rem; text-transform: uppercase; overflow-wrap: break-word; }
+        .chapter-number-page { text-align: center; font-family: var(--font-ui); font-size: var(--fs-sm); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.3rem; }
+        .chapter-title-page { text-align: center; font-family: var(--font-ui); font-size: var(--fs-2xl); font-weight: 600; color: var(--text-main); margin-bottom: 0.5rem; overflow-wrap: break-word; }
         .chapter-divider { width: 40px; height: 1px; background-color: var(--border); margin: 0 auto; }
         
         .book-paragraph-wrapper { position: relative; margin-bottom: 0.45rem; padding: 0.05rem; border-radius: var(--radius-sm); }
@@ -960,7 +982,7 @@
         .world-entry:hover { background: rgba(0, 0, 0, 0.02); }
         body.theme-dark .world-entry:hover { background: rgba(255, 255, 255, 0.02); }
         .world-entry:focus-within { background: var(--tag-bg); }
-        .world-list-title-input { flex: 0 0 auto; max-width: 200px; border: none !important; background: transparent !important; padding: 0 !important; margin: 0 !important; font-weight: 700; font-size: var(--fs-md); color: var(--text-main) !important; outline: none !important; text-transform: uppercase; }
+        .world-list-title-input { flex: 0 0 190px; width: 190px; border: none !important; background: transparent !important; padding: 0 !important; margin: 0 !important; font-family: var(--font-ui); font-weight: 700; font-size: var(--fs-md); color: var(--text-main) !important; outline: none !important; text-transform: uppercase; resize: none; overflow: hidden; white-space: normal; word-break: break-word; line-height: 1.3; }
         .world-entry-dash { width: 1px; align-self: stretch; background: var(--border); flex-shrink: 0; margin: 0 0.35rem; }
         .world-list-content-input { flex: 1; border: none !important; background: transparent !important; padding: 0 !important; margin: 0 !important; font-family: var(--font-ui); font-size: var(--fs-base); line-height: 1.7; color: var(--body-text) !important; outline: none !important; resize: none; overflow: hidden; }
         .world-list-delete { position: absolute; right: 0.2rem; top: 0.4rem; opacity: 0; }
@@ -976,6 +998,9 @@
 
         /* IMPRESIÓN PARA PDF */
         @media print {
+            @page {
+                margin: 0;
+            }
             body > *:not(#printAllPages) {
                 display: none !important;
             }
@@ -1175,7 +1200,7 @@
 
                     <div class="book-toolbar">
                         <div style="display:flex; gap:0.35rem; align-items:center;">
-                            <button class="btn" onclick="toggleTOC()">Índice</button>
+                            <button class="btn" onclick="toggleTOC()">← Índice</button>
                             <input type="text" id="metaTitle" class="meta-input-subtle" placeholder="Título..." style="width:140px; margin:0; padding:0.2rem 0.4rem; font-size: var(--fs-sm);" oninput="saveMeta()">
                             <input type="text" id="metaSubtitle" class="meta-input-subtle" placeholder="Subtítulo..." style="width:140px; margin:0; padding:0.2rem 0.4rem; font-size: var(--fs-sm);" oninput="saveMeta()">
                         </div>
@@ -1246,7 +1271,7 @@
 
     <script>
         let rawData = localStorage.getItem('myBookData');
-        let data = { title: 'TÍTULO', subtitle: 'SUBTÍTULO', ideas: [], chapters: [], trash: { ideas: [], chapters: [] } };
+        let data = { title: 'Título', subtitle: 'Subtítulo', ideas: [], chapters: [], trash: { ideas: [], chapters: [] } };
 
         try {
             if (rawData) {
@@ -1387,7 +1412,7 @@
         function startNewDocument() {
             const doReset = () => {
                 data = {
-                    title: 'TÍTULO', subtitle: 'SUBTÍTULO',
+                    title: 'Título', subtitle: 'Subtítulo',
                     ideas: [], chapters: [], trash: { ideas: [], chapters: [] },
                     tags: ['idea', 'personaje', 'lugar', 'subtrama'],
                     worldBible: { lineamientos: [], personajes: [] }
@@ -1735,7 +1760,7 @@
             }
             // Recién ahora el grid activo es visible: recién ahora se puede medir su altura real
             const activeGrid = mode === 'lineamientos' ? lineGrid : persGrid;
-            if (activeGrid) activeGrid.querySelectorAll('.world-list-content-input').forEach(el => autoResizeTextarea(el));
+            if (activeGrid) activeGrid.querySelectorAll('.world-list-content-input, .world-list-title-input').forEach(el => autoResizeTextarea(el));
         }
 
         function addWorldItem() {
@@ -1744,7 +1769,7 @@
         }
 
         function addLineamiento() {
-            data.worldBible.lineamientos.push({ id: Date.now(), titulo: 'Nuevo lineamiento', contenido: '' });
+            data.worldBible.lineamientos.push({ id: Date.now(), titulo: '', contenido: '' });
             saveData();
             renderWorldTab();
         }
@@ -1773,7 +1798,7 @@
         }
 
         function addPersonaje() {
-            data.worldBible.personajes.push({ id: Date.now(), nombre: 'Nuevo personaje', notas: '' });
+            data.worldBible.personajes.push({ id: Date.now(), nombre: '', notas: '' });
             saveData();
             renderWorldTab();
         }
@@ -1822,7 +1847,7 @@
                     filtered.forEach(l => {
                         lineamientosGrid.innerHTML += `
                             <div class="world-entry">
-                                <input type="text" class="world-list-title-input" value="${escapeHtml(l.titulo || '')}" placeholder="Título..." oninput="saveLineamientoTitulo(${l.id}, this.value)">
+                                <textarea rows="1" class="world-list-title-input" placeholder="Nuevo lineamiento..." oninput="autoResizeTextarea(this); saveLineamientoTitulo(${l.id}, this.value)">${escapeHtml(l.titulo || '')}</textarea>
                                 <span class="world-entry-dash"></span>
                                 <textarea class="world-list-content-input" placeholder="Desarrollá esta idea..." oninput="autoResizeTextarea(this); saveLineamientoContenido(${l.id}, this.value)">${escapeHtml(l.contenido || '')}</textarea>
                                 <button class="btn-icon world-list-delete" title="Eliminar" onclick="deleteLineamiento(${l.id})">
@@ -1847,7 +1872,7 @@
                     filtered.forEach(p => {
                         personajesGrid.innerHTML += `
                             <div class="world-entry">
-                                <input type="text" class="world-list-title-input" value="${escapeHtml(p.nombre || '')}" placeholder="Nombre..." oninput="savePersonajeNombre(${p.id}, this.value)">
+                                <textarea rows="1" class="world-list-title-input" placeholder="Nuevo personaje..." oninput="autoResizeTextarea(this); savePersonajeNombre(${p.id}, this.value)">${escapeHtml(p.nombre || '')}</textarea>
                                 <span class="world-entry-dash"></span>
                                 <textarea class="world-list-content-input" placeholder="Rol, qué representa, notas..." oninput="autoResizeTextarea(this); savePersonajeNotas(${p.id}, this.value)">${escapeHtml(p.notas || '')}</textarea>
                                 <button class="btn-icon world-list-delete" title="Eliminar" onclick="deletePersonaje(${p.id})">
@@ -2507,8 +2532,8 @@
             pages.push(`
                 <div class="book-page">
                     <div class="page-inner-content">
-                        <div class="cover-title">${escapeHtml(data.title || 'TÍTULO')}</div>
-                        <div class="cover-subtitle">${escapeHtml(data.subtitle || 'SUBTÍTULO')}</div>
+                        <div class="cover-title">${escapeHtml(data.title || 'Título')}</div>
+                        <div class="cover-subtitle">${escapeHtml(data.subtitle || 'Subtítulo')}</div>
                     </div>
                     <div class="page-footer-num">- ${pageNum++} -</div>
                 </div>
@@ -2530,7 +2555,8 @@
                     if (chunkIdx === 0) {
                         pageContentHtml += `
                             <div class="chapter-header-page">
-                                <div class="chapter-title-page">CAP ${chapterIndex + 1} | ${escapeHtml(chapter.title)}</div>
+                                <div class="chapter-number-page">Capítulo ${chapterIndex + 1}</div>
+                                <div class="chapter-title-page">${escapeHtml(chapter.title)}</div>
                                 <div class="chapter-divider"></div>
                             </div>
                         `;
